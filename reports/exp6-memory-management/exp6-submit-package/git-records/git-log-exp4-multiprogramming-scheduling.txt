@@ -1,0 +1,8 @@
+﻿46e88a8 (exp4-multiprogramming-scheduling) chore: simplify experiment workflow docs
+5b81be1 (github/exp4-multiprogramming-scheduling) 完成实验4多道程序与协作式调度
+0b47ae0 (github/exp3-batch-privilege) 23251004 完成实验3批处理与特权级
+d25661a (github/exp2-bare-metal-kernel) 23251004 完成实验2裸机环境和最小化内核
+fca9bff (github/exp1-standalone-executable, github/exp0-env-setup) 整理实验资料目录与仓库索引
+ff0d733 23251004 完成实验1独立可执行程序
+4fdc16b 实验1：更新实验手册与报告同步机制，学号 23251004
+6ebf3c0 初始化操作系统实验仓库

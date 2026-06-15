@@ -1,0 +1,17 @@
+﻿  exp0-env-setup
+  exp1-standalone-executable
+  exp2-bare-metal-kernel
+  exp3-batch-privilege
+  exp4-multiprogramming-scheduling
+  exp5-timesharing-preemptive-scheduling
+* exp6-memory-management
+  master
+  remotes/github/HEAD -> github/master
+  remotes/github/exp0-env-setup
+  remotes/github/exp1-standalone-executable
+  remotes/github/exp2-bare-metal-kernel
+  remotes/github/exp3-batch-privilege
+  remotes/github/exp4-multiprogramming-scheduling
+  remotes/github/exp5-timesharing-preemptive-scheduling
+  remotes/github/exp6-memory-management
+  remotes/github/master
