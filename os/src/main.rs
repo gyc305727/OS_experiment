@@ -1,13 +1,18 @@
 #![no_std]
 #![no_main]
 #![feature(panic_info_message)]
+#![feature(alloc_error_handler)]
+
+extern crate alloc;
 
 #[macro_use]
 mod console;
 mod config;
 mod lang_items;
 mod loader;
+mod mm;
 mod sbi;
+mod sync;
 mod syscall;
 mod task;
 mod timer;
@@ -32,10 +37,11 @@ fn clear_bss() {
 pub fn rust_main() -> ! {
     clear_bss();
     println!("[kernel] Hello, world!");
+    mm::init();
     trap::init();
+    task::init();
     trap::enable_timer_interrupt();
     timer::set_next_trigger();
-    loader::load_apps();
     task::run_first_task();
     panic!("Unreachable in rust_main!");
 }
