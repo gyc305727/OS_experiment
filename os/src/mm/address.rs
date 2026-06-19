@@ -84,6 +84,10 @@ impl PhysAddr {
     pub fn aligned(&self) -> bool {
         self.page_offset() == 0
     }
+
+    pub fn get_mut<T>(&self) -> &'static mut T {
+        unsafe { (self.0 as *mut T).as_mut().unwrap() }
+    }
 }
 
 impl VirtAddr {
@@ -206,6 +210,14 @@ where
 {
     pub fn new(start: T, end: T) -> Self {
         Self { l: start, r: end }
+    }
+
+    pub fn get_start(&self) -> T {
+        self.l
+    }
+
+    pub fn get_end(&self) -> T {
+        self.r
     }
 }
 

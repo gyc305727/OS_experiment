@@ -1,4 +1,5 @@
 use super::{frame_alloc, FrameTracker, PhysAddr, PhysPageNum, VirtAddr, VirtPageNum};
+use alloc::string::String;
 use alloc::vec;
 use alloc::vec::Vec;
 use bitflags::*;
@@ -179,4 +180,30 @@ pub fn translated_byte_buffer(
     }
 
     buffers
+}
+
+pub fn translated_str(token: usize, ptr: *const u8) -> String {
+    let page_table = PageTable::from_token(token);
+    let mut string = String::new();
+    let mut va = ptr as usize;
+    loop {
+        let ch: u8 = *page_table
+            .translate_va(VirtAddr::from(va))
+            .unwrap()
+            .get_mut();
+        if ch == 0 {
+            break;
+        }
+        string.push(ch as char);
+        va += 1;
+    }
+    string
+}
+
+pub fn translated_refmut<T>(token: usize, ptr: *mut T) -> &'static mut T {
+    let page_table = PageTable::from_token(token);
+    page_table
+        .translate_va(VirtAddr::from(ptr as usize))
+        .unwrap()
+        .get_mut()
 }

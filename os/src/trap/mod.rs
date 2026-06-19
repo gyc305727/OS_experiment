@@ -38,7 +38,6 @@ pub fn enable_timer_interrupt() {
 #[no_mangle]
 pub fn trap_handler() -> ! {
     set_kernel_trap_entry();
-    let cx = current_trap_cx();
     let scause = read_scause();
     let stval = read_stval();
     let is_interrupt = (scause >> 63) != 0;
@@ -47,20 +46,23 @@ pub fn trap_handler() -> ! {
     if !is_interrupt {
         match cause {
             8 => {
+                let mut cx = current_trap_cx();
                 cx.sepc += 4;
-                cx.x[10] = syscall(cx.x[17], [cx.x[10], cx.x[11], cx.x[12]]) as usize;
+                let result = syscall(cx.x[17], [cx.x[10], cx.x[11], cx.x[12]]);
+                cx = current_trap_cx();
+                cx.x[10] = result as usize;
             }
             5 | 7 | 12 | 13 | 15 => {
                 println!(
                     "[kernel] PageFault in application, bad addr = {:#x}, bad instruction = {:#x}, core dumped.",
                     stval,
-                    cx.sepc
+                    current_trap_cx().sepc
                 );
-                exit_current_and_run_next();
+                exit_current_and_run_next(-2);
             }
             2 => {
                 println!("[kernel] IllegalInstruction in application, core dumped.");
-                exit_current_and_run_next();
+                exit_current_and_run_next(-3);
             }
             _ => panic!("Unsupported trap {}, stval = {:#x}!", scause, stval),
         }
